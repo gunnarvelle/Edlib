@@ -27,11 +27,12 @@ use RuntimeException;
 class AdminContentMigrateController extends Controller
 {
     public function __construct(
-        private readonly h5p               $h5p,
-        private readonly H5PCore           $h5pCore,
+        private readonly h5p                   $h5p,
+        private readonly H5PCore               $h5pCore,
         private readonly H5PFrameworkInterface $framework,
-        private readonly HubClient         $hubClient,
-    ) {
+        private readonly HubClient             $hubClient,
+    )
+    {
     }
 
     public function index(Request $request): View
@@ -66,7 +67,7 @@ class AdminContentMigrateController extends Controller
                         return null;
                     }
                     $h5pId = substr($url, strlen($routePrefix));
-                    return is_numeric($h5pId) ? (int) $h5pId : null;
+                    return is_numeric($h5pId) ? (int)$h5pId : null;
                 })
                 ->forget('');
 
@@ -80,7 +81,7 @@ class AdminContentMigrateController extends Controller
             $items = $h5pContents->map(function (H5PContent $h5pContent) use ($leafsByH5pId) {
                 $leaf = $leafsByH5pId[$h5pContent->id];
 
-                return (object) [
+                return (object)[
                     'h5p_id' => $h5pContent->id,
                     'title' => $leaf['title'] ?: $h5pContent->title,
                     'hub_content_id' => $leaf['content_id'],
@@ -172,15 +173,15 @@ class AdminContentMigrateController extends Controller
     {
         $content = json_decode($parameters, associative: true);
         $content['threeImage']['wasConvertedFromVirtualTour'] = true;
-        for ($i = 0; $i < count($contentJson["threeImage"]["scenes"] ?? []); $i++) {
-            $contentJson["threeImage"]["scenes"][$i]["enableZoom"] = true;
+        for ($i = 0; $i < count($content["threeImage"]["scenes"] ?? []); $i++) {
+            $content["threeImage"]["scenes"][$i]["enableZoom"] = true;
             /*
              * From code at https://github.com/NDLANO/h5p-vt2er/blob/c11a34b9cdaa6842c1430a79912e78531ca21bcb/h5p-vt2er/app/H5PVT2ER.php#L299
              * May or may not be interested in adding this as well
-            for ($j = 0; $j < count($contentJson["threeImage"]["scenes"][$i]["interactions"] ?? []); $j++) {
-                $contentJson["threeImage"]["scenes"][$i]["interactions"][$j]["iconTypeTextBox"] = "text-icon";
-                $contentJson["threeImage"]["scenes"][$i]["interactions"][$j]["showAsHotspot"] = false;
-                $contentJson["threeImage"]["scenes"][$i]["interactions"][$j]["showAsOpenSceneContent"] = false;
+            for ($j = 0; $j < count($content["threeImage"]["scenes"][$i]["interactions"] ?? []); $j++) {
+                $content["threeImage"]["scenes"][$i]["interactions"][$j]["iconTypeTextBox"] = "text-icon";
+                $content["threeImage"]["scenes"][$i]["interactions"][$j]["showAsHotspot"] = false;
+                $content["threeImage"]["scenes"][$i]["interactions"][$j]["showAsOpenSceneContent"] = false;
             }
             */
         }
