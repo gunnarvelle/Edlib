@@ -17,7 +17,7 @@ class ContentFilterTest extends TestCase
         $this->assertTrue($validator->passes());
 
         // Type parameter
-        $validator = Validator::make(['type' => ['H5P.DragText', 'H5P.Flashcards', 'text', 'something else', 'something   different']], $rules);
+        $validator = Validator::make(['type' => ['H5P.DragText', 'H5P.Flashcards', 'text', 'something else', 'something   different', 'NDLA Virtual Tour (360)']], $rules);
         $this->assertTrue($validator->passes());
 
         $validator = Validator::make(['type' => ["string\nvalue"]], $rules);
