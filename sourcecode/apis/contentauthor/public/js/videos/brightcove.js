@@ -55,6 +55,17 @@ H5P.VideoBrightcove = (function ($) {
                     if( options.controls !== true){
                         player.bigPlayButton.hide();
                     }
+                    if (options.disableFullscreen === true) {
+                        if (player.controlBar && player.controlBar.fullscreenToggle) {
+                            player.controlBar.fullscreenToggle.hide();
+                        }
+                        player.on('play', function () {
+                            // Some players re-enable fullscreen on play or have it in a state that needs re-hiding
+                            if (player.controlBar && player.controlBar.fullscreenToggle) {
+                                player.controlBar.fullscreenToggle.hide();
+                            }
+                        });
+                    }
                     player.on('loadedmetadata', function () {
                         self.trigger('loaded');
                         self.playerTracks = filterTracks(player);
@@ -82,6 +93,9 @@ H5P.VideoBrightcove = (function ($) {
 
         self.appendTo = function ($container) {
             $container.addClass('h5p-brightcove').append($wrapper);
+            if (options.disableFullscreen === true) {
+                $container.addClass('h5p-disable-fullscreen');
+            }
             create();
         };
 
